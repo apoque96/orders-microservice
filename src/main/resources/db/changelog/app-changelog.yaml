@@ -1,0 +1,146 @@
+databaseChangeLog:
+  - preConditions:
+      - runningAs:
+          username: root
+  - changeSet:
+      id: 1
+      author: apoque
+      comment: Initial setup
+      changes:
+        # Tables added:
+        # - orders
+        # - customer
+        # - order_items
+        # products are fetched from the products microservice
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: customer_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: deleted_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: order_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_orders_customer
+                    referencedTableName: customers
+                    referencedColumnNames: customer_id
+              - column:
+                  name: order_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: deleted_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: order_items
+            columns:
+              - column:
+                  name: order_item_id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_order_items_order
+                    referencedTableName: orders
+                    referencedColumnNames: order_id
+              - column:
+                  name: product_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: deleted_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
